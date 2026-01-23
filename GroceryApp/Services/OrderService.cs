@@ -1,37 +1,3 @@
-// using GroceryApp.Data;
-// using GroceryApp.Models;
-// using System.Collections.Generic;
-// using System.Linq;
-
-// namespace GroceryApp.Services
-// {
-//     public class OrderService : IOrderService
-//     {
-//         private readonly AppDbContext _context;
-
-//         public OrderService(AppDbContext context)
-//         {
-//             _context = context;
-//         }
-
-//         public IEnumerable<Order> GetAllOrders()
-//         {
-//             return _context.Orders.ToList();
-//         }
-
-//         public Order GetOrderById(int id)
-//         {
-//             return _context.Orders.Find(id);
-//         }
-
-//         public void AddOrder(Order order)
-//         {
-//             _context.Orders.Add(order);
-//             _context.SaveChanges();
-//         }
-//     }
-// }
-
 using GroceryApp.Data;
 using GroceryApp.Models;
 using GroceryApp.Repositories;
