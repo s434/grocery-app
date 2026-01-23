@@ -93,6 +93,7 @@ namespace GroceryApp
             services.AddSwaggerGen();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IOrderService, OrderService>();
         }
 
