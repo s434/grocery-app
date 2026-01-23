@@ -66,6 +66,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using GroceryApp.Repositories;
+using GroceryApp.Services;
+
 
 namespace GroceryApp
 {
@@ -91,6 +93,7 @@ namespace GroceryApp
             services.AddSwaggerGen();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderService, OrderService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
