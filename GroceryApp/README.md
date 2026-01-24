@@ -13,7 +13,7 @@ The system allows users to view products, select quantities, place orders, and a
 ## Project Structure
 
 ### Backend (ASP.NET Core)
-
+```
 GroceryApp
 │
 ├── Controllers
@@ -42,7 +42,7 @@ GroceryApp
 │
 ├── Program.cs 
 └── Startup.cs
-
+```
 **Explanation:**
 
 - Controllers → Handle HTTP requests and responses 
@@ -52,12 +52,12 @@ GroceryApp
 - Services → Contain business logic  
 
 ### Frontend (Angular / Ionic)
-
+```
 GroceryApp
-├── src/app/home
-  ├── home.page.ts
-  └── home.page.html
-
+├── grocery-frontend/src/app/home
+| ├── home.page.ts
+| └── home.page.html
+```
 
 - `home.page.ts` → API calls, cart logic, order handling  
 - `home.page.html` → UI layout  
@@ -74,7 +74,7 @@ GET /products
 Returns a list of all available products with their price and stock.
 
 **Response Example:**
-```json
+```
 [
   {
     "id": 1,
@@ -83,36 +83,39 @@ Returns a list of all available products with their price and stock.
     "stock": 10
   }
 ]
+```
 
 ### 2. Place Order
 
 **Endpoint:** 
 POST /orders
 Request Body:
-
+```
 {
   "productId": 1,
   "quantity": 2
 }
-Description:
+```
 
-1. Validates stock
-2. Calculates total price
-3. Reduces stock
-4. Saves order to database
+**Description:**  
 
-Responses:
+- Validates stock
+- Calculates total price
+- Reduces stock
+- Saves order to database
+
+**Responses:**  
 Success → Order created
 Failure → Out of stock / invalid request
 
-Where Business Logic is Handled?
+### Where Business Logic is Handled?
 All business logic is implemented in the Service layer, mainly in:
 Services/OrderService.cs
 
-This includes:
-Checking if product exists
-Validating stock availability
-Calculating total price
-Updating product stock
-Saving order
-Returning success or failure
+**This includes:**  
+- Checking if product exists
+- Validating stock availability
+- Calculating total price
+- Updating product stock
+- Saving order
+- Returning success or failure
