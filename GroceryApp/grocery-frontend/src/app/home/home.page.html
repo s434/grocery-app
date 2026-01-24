@@ -1,56 +1,96 @@
 <div style="background: white; color: black; padding: 20px; min-height: 100vh;">
 
-  <h2>Products</h2>
+  <div style="display: flex; gap: 30px;">
 
-  <div style="
-    max-height: 350px;
-    overflow-y: auto;
-    border: 1px solid #ccc;
-    padding: 12px;
-    border-radius: 8px;
-    width: 420px;
-    background: #fafafa;
-  ">
+    <!-- LEFT SIDE: Products -->
+    <div>
 
-    <div *ngFor="let p of products"
-         style="margin-bottom: 12px; padding: 8px; border-bottom: 1px solid #e0e0e0;">
+      <h2>Products</h2>
 
-      <b>{{ p.name }}</b><br>
-      Price: ₹{{ p.price }} <br>
-      Stock: {{ p.stock }}
+      <div style="
+        max-height: 350px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        padding: 12px;
+        border-radius: 8px;
+        width: 420px;
+        background: #fafafa;
+      ">
 
-      <br><br>
+        <div *ngFor="let p of products"
+             style="margin-bottom: 12px; padding: 8px; border-bottom: 1px solid #e0e0e0;">
 
-      Quantity:
-      <input type="number"
-             min="0"
-             [max]="p.stock"
-             (input)="updateCart(p, $event.target.value)"
-             style="width: 70px; padding: 4px; background-color: white;" />
+          <b>{{ p.name }}</b><br>
+          Price: ₹{{ p.price | number:'1.0-2' }} <br>
+          Stock: {{ p.stock }}
+
+          <br><br>
+
+          Quantity:
+          <input type="number"
+                 min="0"
+                 [max]="p.stock"
+                 (input)="updateCart(p, $event.target.value)"
+                 style="width: 70px; padding: 4px; background-color: white;" />
+
+        </div>
+
+      </div>
+
+      <br>
+
+      <button (click)="placeOrder()"
+              style="
+                width: 200px;
+                padding: 10px;
+                border-radius: 6px;
+                border: none;
+                background-color: #4CAF50;
+                color: white;
+                font-size: 15px;
+                cursor: pointer;
+              ">
+        Place Order
+      </button>
+
+    </div>
+
+    <!-- RIGHT SIDE: Order Summary -->
+    <div style="
+      width: 300px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 12px;
+      background: #fafafa;
+      height: fit-content;
+    ">
+
+      <h3>Your Order</h3>
+
+      <div *ngIf="cartItems.length === 0" style="color: #777;">
+        No items selected
+      </div>
+
+      <div *ngFor="let item of cartItems" style="margin-bottom: 8px;">
+        <div style="display:flex; justify-content:space-between;">
+          <span>{{ item.name }} × {{ item.quantity }}</span>
+          <span>₹{{ item.price * item.quantity | number:'1.0-2' }}</span>
+        </div>
+      </div>
+
+      <hr *ngIf="cartItems.length > 0">
+
+      <div *ngIf="cartItems.length > 0">
+        <b>Total: ₹{{ totalPrice | number:'1.0-2' }}</b>
+      </div>
 
     </div>
 
   </div>
 
-  <br>
-
-  <button (click)="placeOrder()"
-          style="
-            width: 200px;
-            padding: 10px;
-            border-radius: 6px;
-            border: none;
-            background-color: #4CAF50;
-            color: white;
-            font-size: 15px;
-            cursor: pointer;
-          ">
-    Place Order
-  </button>
-
 </div>
 
-
+<!-- Success Popup -->
 <div *ngIf="message" style="
   position: fixed;
   top: 20px;

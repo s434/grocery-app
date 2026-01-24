@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -10,10 +11,14 @@ import { FormsModule } from '@angular/forms';
 })
 export class HomePage implements OnInit {
 
-  baseUrl = 'http://localhost:5000';   
+  baseUrl = 'http://localhost:5000';
 
   products: any[] = [];
   cart: { productId: number; quantity: number; name: string }[] = [];
+
+  // UI cart summary
+  cartItems: any[] = [];
+  totalPrice: number = 0;
 
   message = '';
   error = '';
@@ -36,6 +41,11 @@ export class HomePage implements OnInit {
 
     // Remove existing entry
     this.cart = this.cart.filter(i => i.productId !== product.id);
+    if (quantity > product.stock) {
+  this.error = `Only ${product.stock} left for ${product.name}`;
+  this.refreshCartView();
+  return;
+}
 
     if (quantity > 0) {
       this.cart.push({
@@ -44,7 +54,29 @@ export class HomePage implements OnInit {
         name: product.name
       });
     }
+
+    this.refreshCartView();
   }
+
+  refreshCartView() {
+
+  if (this.error) {
+    this.message = '';
+  }
+
+  this.cartItems = this.cart.map(item => {
+    const product = this.products.find(p => p.id === item.productId);
+    return {
+      ...item,
+      price: product?.price || 0
+    };
+  });
+
+  this.totalPrice = this.cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+}
 
   placeOrder() {
     this.message = '';
@@ -90,6 +122,8 @@ export class HomePage implements OnInit {
       }
 
       this.cart = [];
+      this.cartItems = [];
+      this.totalPrice = 0;
       this.loadProducts();
     }
   }
