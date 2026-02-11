@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using GroceryApp.Repositories;
 using GroceryApp.Services;
 
@@ -35,7 +38,30 @@ namespace GroceryApp
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IOrderService, OrderService>();
+           
+
             services.AddCors();
+            var jwt = Configuration.GetSection("Jwt");
+            var key = Encoding.ASCII.GetBytes(jwt["Key"]);
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwt["Issuer"],
+                    ValidAudience = jwt["Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(key)
+                    };
+                    });
+                    services.AddAuthorization();
+
 
         }
 
@@ -49,6 +75,8 @@ namespace GroceryApp
             }
 
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseCors(x => x
             .AllowAnyOrigin()
             .AllowAnyMethod()
