@@ -8,6 +8,8 @@ namespace GroceryApp.Repositories
         IEnumerable<Product> GetAll();
         Product GetById(int id);
         void Update(Product product);
+        void Add(Product product);
+   
     }
 }
 

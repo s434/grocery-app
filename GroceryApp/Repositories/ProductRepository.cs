@@ -22,5 +22,11 @@ namespace GroceryApp.Repositories
         {
             _context.Products.Update(product);
         }
+        public void Add(Product product)
+        {
+            _context.Products.Add(product);
+            _context.SaveChanges();
+        }
+       
     }
 }

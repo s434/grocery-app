@@ -1,5 +1,6 @@
 using GroceryApp.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GroceryApp.Controllers
 {
@@ -19,5 +20,14 @@ namespace GroceryApp.Controllers
         {
             return Ok(_service.GetProducts());
         }
+        
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult Create(CreateProductDto dto)
+        {
+            _service.CreateProduct(dto);
+            return Ok("Product created");
+        }
+
     }
 }
