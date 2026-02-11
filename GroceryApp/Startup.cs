@@ -38,7 +38,8 @@ namespace GroceryApp
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IOrderService, OrderService>();
-           
+            services.AddScoped<AuthService>();
+
 
             services.AddCors();
             var jwt = Configuration.GetSection("Jwt");
