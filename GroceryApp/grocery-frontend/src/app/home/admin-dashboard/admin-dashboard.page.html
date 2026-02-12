@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Admin Dashboard</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-card *ngIf="!loading">
+    <ion-card-header>
+      <ion-card-title>Total Revenue</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <h2>{{ totalRevenue | currency:'INR' }}</h2>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="topProducts.length > 0">
+    <ion-card-header>
+      <ion-card-title>Top Selling Products</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let product of topProducts">
+          {{ product.name }} - {{ product.quantitySold }} sold
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="lowStockProducts.length > 0">
+    <ion-card-header>
+      <ion-card-title>Low Stock Alert</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let product of lowStockProducts">
+          {{ product.name }} - {{ product.stock }} left
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
