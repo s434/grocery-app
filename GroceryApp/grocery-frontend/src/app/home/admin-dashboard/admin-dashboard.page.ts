@@ -5,7 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../services/notification.service';
-
+import { AdminService } from '../../services/admin.service';
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.page.html',
@@ -25,7 +25,7 @@ export class AdminDashboardPage implements OnInit {
   showCreateProduct = false;
   newProduct = { name: '', price: 0, stock: 0 };
 
-  constructor(private http: HttpClient, private router: Router, private notificationService: NotificationService) {}
+  constructor(private http: HttpClient, private router: Router, private notificationService: NotificationService, private adminService: AdminService) {}
 
   ngOnInit() {
     this.loadDashboard();
@@ -56,6 +56,18 @@ export class AdminDashboardPage implements OnInit {
         }
       });
   }
+  orders: any[] = [];
+
+loadOrders() {
+  this.adminService.getAllOrders()
+    .subscribe(res => {
+      this.orders = res as any[];
+    });
+}
+
+ionViewWillEnter() {
+  this.loadOrders();
+}
 
   createProduct() {
     const token = localStorage.getItem('adminToken');

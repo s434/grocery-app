@@ -3,6 +3,7 @@ using GroceryApp.Models;
 using GroceryApp.Repositories;
 using System;
 using GroceryApp.DTOs;
+using System.Collections.Generic;
 
 namespace GroceryApp.Services
 {
@@ -17,6 +18,10 @@ namespace GroceryApp.Services
             _productRepo = productRepo;
             _orderRepo = orderRepo;
             _context = context;
+        }
+        public IEnumerable<Order> GetOrders()
+        {
+            return _orderRepo.GetAll();
         }
 
         public Order CreateOrder(CreateOrderDto dto)

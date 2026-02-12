@@ -119,5 +119,41 @@
   </ion-row>
 
 </ion-grid>
+<ion-col size="12" size-md="4">
+
+  <ion-card *ngIf="orders.length > 0">
+    <ion-card-header>
+      <ion-card-title>All Orders</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <ion-card
+        *ngFor="let o of orders; let i = index"
+        style="
+        color:black;
+          margin-bottom: 12px;
+          border-left: 4px solid #2e7d32;
+          --background: #ffffff;
+        "
+      >
+        <ion-card-content>
+
+          <h2 style="margin-bottom:6px; color:#2e7d32;">
+            Order #{{ i + 1 }}
+          </h2>
+
+          <p><b>Product ID:</b> {{ o.productId }}</p>
+          <p><b>Quantity:</b> {{ o.quantity }}</p>
+          <p><b>Total:</b> ₹{{ o.totalPrice }}</p>
+
+        </ion-card-content>
+      </ion-card>
+
+    </ion-card-content>
+  </ion-card>
+
+</ion-col>
+
 
 </ion-content>

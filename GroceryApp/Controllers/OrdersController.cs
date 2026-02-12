@@ -2,6 +2,7 @@ using GroceryApp.Models;
 using GroceryApp.Services;
 using Microsoft.AspNetCore.Mvc;
 using GroceryApp.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GroceryApp.Controllers
 {
@@ -29,6 +30,14 @@ namespace GroceryApp.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("all")]
+        public IActionResult GetAllOrders()
+        {
+            var orders = _service.GetOrders();
+            return Ok(orders);
         }
     }
 }

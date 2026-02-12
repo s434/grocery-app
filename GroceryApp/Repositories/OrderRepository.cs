@@ -1,5 +1,7 @@
 using GroceryApp.Data;
 using GroceryApp.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GroceryApp.Repositories
 {
@@ -16,5 +18,10 @@ namespace GroceryApp.Repositories
         {
             _context.Orders.Add(order);
         }
+        public IEnumerable<Order> GetAll()
+        {
+            return _context.Orders.ToList();
+        }
+
     }
 }
