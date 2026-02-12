@@ -7,16 +7,25 @@ import { HttpClient } from '@angular/common/http';
 export class AdminService {
 
   private baseUrl = "http://localhost:5000"; 
+  private getAuthHeaders() {
+  const token = localStorage.getItem("adminToken");
+  return { Authorization: `Bearer ${token}` };
+}
+
 
   constructor(private http: HttpClient) {}
 
   getAllOrders() {
-    const token = localStorage.getItem("adminToken");
+  return this.http.get(`${this.baseUrl}/orders/all`, {
+    headers: this.getAuthHeaders()
+  });
+}
 
-    return this.http.get(`${this.baseUrl}/orders/all`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-  }
+updateStock(productId: number, stock: number) {
+  return this.http.put(
+    `${this.baseUrl}/products/stock`,
+    { productId,stock },
+    { headers: this.getAuthHeaders() }
+  );
+}
 }

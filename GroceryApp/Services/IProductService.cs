@@ -8,5 +8,7 @@ namespace GroceryApp.Services
     {
         IEnumerable<Product> GetProducts();
         Product CreateProduct(CreateProductDto dto);
+        void UpdateStock(UpdateStockDto dto);
+
     }
 }

@@ -30,5 +30,14 @@ namespace GroceryApp.Controllers
             return Ok(new { message = "Product created", productId = product.Id });
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPut("stock")]
+        public IActionResult UpdateStock(UpdateStockDto dto)
+        {
+            _service.UpdateStock(dto);
+            return Ok(new { message = "Stock updated" });
+        }
+
+
     }
 }

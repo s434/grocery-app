@@ -2,7 +2,7 @@ using GroceryApp.Models;
 using GroceryApp.Repositories;
 using System.Collections.Generic;
 using GroceryApp.DTOs;
-
+using System;
 namespace GroceryApp.Services
 {
     public class ProductService : IProductService
@@ -31,6 +31,15 @@ namespace GroceryApp.Services
             return product;
          
             }
+        public void UpdateStock(UpdateStockDto dto)
+        {
+            var product = _repo.GetById(dto.ProductId);
+            if (product == null)
+               throw new Exception("Product not found");
+            product.Stock = dto.Stock;
+            _repo.Update(product);
+        }
+
     }
 }
 

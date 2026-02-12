@@ -7,6 +7,9 @@
       <ion-button color="success" (click)="showCreateProduct = true">
         Create Product
       </ion-button>
+      <ion-button color="success" (click)="showStockManager = true">
+        Update Stocks
+      </ion-button>
 
       <ion-button color="success" fill="outline" (click)="sendPromo()">
         Send Promo
@@ -59,6 +62,60 @@
 
     </ion-card-content>
   </ion-card>
+
+<ion-card *ngIf="showStockManager">
+
+  <ion-card-header>
+    <ion-card-title>Update Product Stocks</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+
+    <ion-list>
+
+      <ion-item *ngFor="let p of products">
+
+        <ion-label>
+          <h2>{{ p.name }}</h2>
+          <p>Current: {{ p.stock }}</p>
+        </ion-label>
+
+        <ion-input
+          type="number"
+          placeholder="New"
+          [(ngModel)]="p.newStock"
+          style="max-width:120px;">
+        </ion-input>
+
+      </ion-item>
+
+    </ion-list>
+
+  
+    <div style="margin-top:15px; display:flex; gap:10px;">
+
+      <ion-button
+        expand="block"
+        color="success"
+        (click)="saveAllStocks()">
+
+        Save All Changes
+      </ion-button>
+
+      <ion-button
+        expand="block"
+        fill="outline"
+        color="medium"
+        (click)="showStockManager = false">
+
+        Cancel
+      </ion-button>
+
+    </div>
+
+  </ion-card-content>
+
+</ion-card>
 
 
   <ion-grid>
@@ -119,6 +176,7 @@
   </ion-row>
 
 </ion-grid>
+
 <ion-col size="12" size-md="4">
 
   <ion-card *ngIf="orders.length > 0">

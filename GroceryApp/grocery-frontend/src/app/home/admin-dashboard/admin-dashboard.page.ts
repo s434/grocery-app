@@ -23,13 +23,21 @@ export class AdminDashboardPage implements OnInit {
   loading: boolean = true;
 
   showCreateProduct = false;
+  showStockManager = false;
   newProduct = { name: '', price: 0, stock: 0 };
 
   constructor(private http: HttpClient, private router: Router, private notificationService: NotificationService, private adminService: AdminService) {}
 
   ngOnInit() {
     this.loadDashboard();
+    this.loadProducts();
   }
+  loadProducts() {
+  this.http.get<any[]>("http://localhost:5000/products")
+    .subscribe(data => {
+      this.products = data;
+    });
+}
 
   loadDashboard() {
     const token = localStorage.getItem('adminToken');
@@ -57,6 +65,8 @@ export class AdminDashboardPage implements OnInit {
       });
   }
   orders: any[] = [];
+  products: any[] = [];
+
 
 loadOrders() {
   this.adminService.getAllOrders()
@@ -97,6 +107,33 @@ ionViewWillEnter() {
         }
       });
     }
+    
+    saveAllStocks() {
+      const updates = this.products
+      .filter(p => p.newStock !== undefined && p.newStock !== null)
+      .map(p => {
+        const stock = Number(p.newStock);
+
+      if (!isNaN(stock) && stock >= 0) {
+        return this.adminService.updateStock(p.id, stock).toPromise();
+      }
+      return null;
+      });
+      Promise.all(updates)
+      .then(() => {
+        alert("Stocks updated successfully!");
+        this.products.forEach(p => {
+        if (p.newStock !== undefined) {
+          p.stock = p.newStock;
+          p.newStock = undefined;
+        }
+      });
+
+      this.showStockManager = false;
+    })
+    .catch(() => alert("Some updates failed"));
+  }
+
     sendPromo() {
         this.notificationService
         .sendPromoNotification(
