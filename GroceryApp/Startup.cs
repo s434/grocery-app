@@ -38,6 +38,7 @@ namespace GroceryApp
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IDashboardService, DashboardService>();
             services.AddScoped<AuthService>();
 
 
