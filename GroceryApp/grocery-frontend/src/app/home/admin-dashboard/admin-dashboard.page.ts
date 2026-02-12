@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -12,30 +14,90 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AdminDashboardPage implements OnInit {
 
+
+  baseUrl = 'http://localhost:5000'; 
+
   totalRevenue: number = 0;
   topProducts: { name: string, quantitySold: number }[] = [];
   lowStockProducts: { name: string, stock: number }[] = [];
   loading: boolean = true;
 
-  constructor(private http: HttpClient) {}
+  showCreateProduct = false;
+  newProduct = { name: '', price: 0, stock: 0 };
+
+  constructor(private http: HttpClient, private router: Router, private notificationService: NotificationService) {}
 
   ngOnInit() {
     this.loadDashboard();
   }
 
   loadDashboard() {
-    this.http.get<any>('http://localhost:5000/api/admin/dashboard') 
+    const token = localStorage.getItem('adminToken');
+    if (!token) {
+      alert('Please login as admin first!');
+      this.router.navigate(['/home']);
+      return;
+    }
+
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+
+    this.http.get<any>(`${this.baseUrl}/api/admin/dashboard`, { headers })
       .subscribe({
-        next: (data) => {
+        next: data => {
           this.totalRevenue = data.totalRevenue;
           this.topProducts = data.topSellingProducts;
           this.lowStockProducts = data.lowStockProducts;
           this.loading = false;
         },
-        error: (err) => {
+        error: err => {
           console.error('Error loading dashboard:', err);
-          this.loading = false;
+          alert('Failed to load dashboard. You may need to login again.');
+          this.router.navigate(['/home']);
         }
       });
   }
-}
+
+  createProduct() {
+    const token = localStorage.getItem('adminToken');
+    if (!token) {
+      alert('Admin not logged in!');
+      return;
+    }
+
+    if (!this.newProduct.name || this.newProduct.price <= 0 || this.newProduct.stock < 0) {
+      alert('Please fill in valid product details');
+      return;
+    }
+
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+
+    this.http.post(`${this.baseUrl}/products`, this.newProduct, { headers })
+      .subscribe({
+        next: () => {
+          alert('Product created successfully');
+          this.showCreateProduct = false;
+          this.newProduct = { name: '', price: 0, stock: 0 };
+          this.loadDashboard(); 
+        },
+        error: err => {
+          console.error(err);
+          alert('Failed to create product');
+        }
+      });
+    }
+    sendPromo() {
+        this.notificationService
+        .sendPromoNotification(
+            'Special Offer!',
+            'Get 20% off on all groceries today!'
+        )
+        .then(() => {
+            alert('Promo notification sent (mock)');
+        });
+    }
+    logout() {
+        if(confirm('Are you sure you want to logout?')){
+            localStorage.removeItem('adminToken');
+            this.router.navigate(['/home']);
+        }}
+    }

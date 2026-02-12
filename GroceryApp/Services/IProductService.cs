@@ -6,6 +6,6 @@ namespace GroceryApp.Services
     public interface IProductService
     {
         IEnumerable<Product> GetProducts();
-        void CreateProduct(CreateProductDto dto);
+        Product CreateProduct(CreateProductDto dto);
     }
 }

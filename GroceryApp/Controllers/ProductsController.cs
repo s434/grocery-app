@@ -25,8 +25,8 @@ namespace GroceryApp.Controllers
         [HttpPost]
         public IActionResult Create(CreateProductDto dto)
         {
-            _service.CreateProduct(dto);
-            return Ok("Product created");
+           var product =  _service.CreateProduct(dto);
+            return Ok(new { message = "Product created", productId = product.Id });
         }
 
     }

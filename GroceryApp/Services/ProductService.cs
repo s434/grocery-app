@@ -18,7 +18,7 @@ namespace GroceryApp.Services
             return _repo.GetAll();
         }
 
-        public void CreateProduct(CreateProductDto dto)
+        public Product CreateProduct(CreateProductDto dto)
         {
             var product = new Product
             {
@@ -27,6 +27,7 @@ namespace GroceryApp.Services
                 Stock = dto.Stock
             };
             _repo.Add(product);
+            return product;
          
             }
     }

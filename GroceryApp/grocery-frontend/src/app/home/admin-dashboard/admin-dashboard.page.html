@@ -1,44 +1,123 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="light">
     <ion-title>Admin Dashboard</ion-title>
+
+    <ion-buttons slot="end">
+
+      <ion-button color="success" (click)="showCreateProduct = true">
+        Create Product
+      </ion-button>
+
+      <ion-button color="success" fill="outline" (click)="sendPromo()">
+        Send Promo
+      </ion-button>
+
+      <ion-button color="success" fill="clear" (click)="logout()">
+        Logout
+      </ion-button>
+
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
 
-  <ion-card *ngIf="!loading">
+<ion-content class="ion-padding" style="--background:#ffffff">
+
+  <ion-card *ngIf="showCreateProduct">
+
     <ion-card-header>
-      <ion-card-title>Total Revenue</ion-card-title>
+      <ion-card-title>Create New Product</ion-card-title>
     </ion-card-header>
+
     <ion-card-content>
-      <h2>{{ totalRevenue | currency:'INR' }}</h2>
+
+      <ion-item>
+        <ion-label position="stacked">Name</ion-label>
+        <ion-input [(ngModel)]="newProduct.name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Price</ion-label>
+        <ion-input type="number" [(ngModel)]="newProduct.price"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Stock</ion-label>
+        <ion-input type="number" [(ngModel)]="newProduct.stock"></ion-input>
+      </ion-item>
+
+      <div style="margin-top:15px; display:flex; gap:10px;">
+        <ion-button color="success" expand="block" (click)="createProduct()">
+          Create
+        </ion-button>
+
+        <ion-button color="medium" expand="block" fill="outline"
+          (click)="showCreateProduct = false">
+          Cancel
+        </ion-button>
+      </div>
+
     </ion-card-content>
   </ion-card>
 
-  <ion-card *ngIf="topProducts.length > 0">
-    <ion-card-header>
-      <ion-card-title>Top Selling Products</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-list>
-        <ion-item *ngFor="let product of topProducts">
-          {{ product.name }} - {{ product.quantitySold }} sold
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
 
-  <ion-card *ngIf="lowStockProducts.length > 0">
-    <ion-card-header>
-      <ion-card-title>Low Stock Alert</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-list>
-        <ion-item *ngFor="let product of lowStockProducts">
-          {{ product.name }} - {{ product.stock }} left
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
+  <ion-grid>
+
+  <ion-row>
+
+    <!-- TOTAL REVENUE -->
+    <ion-col size="12" size-md="4">
+      <ion-card *ngIf="!loading" style="height:100%;">
+        <ion-card-header>
+          <ion-card-title>Total Revenue</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          <h1 style="color:#2e7d32;">
+            {{ totalRevenue | currency:'INR' }}
+          </h1>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+
+
+    <!-- TOP PRODUCTS -->
+    <ion-col size="12" size-md="4">
+      <ion-card *ngIf="topProducts.length > 0" style="height:100%;">
+        <ion-card-header>
+          <ion-card-title>Top Selling Products</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          <ion-list>
+            <ion-item *ngFor="let product of topProducts">
+              {{ product.name }} — {{ product.quantitySold }} sold
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+
+
+    <!-- LOW STOCK -->
+    <ion-col size="12" size-md="4">
+      <ion-card *ngIf="lowStockProducts.length > 0" style="height:100%">
+        <ion-card-header>
+          <ion-card-title>Low Stock Alert</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          <ion-list>
+            <ion-item *ngFor="let product of lowStockProducts">
+              {{ product.name }} — {{ product.stock }} left
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+
+  </ion-row>
+
+</ion-grid>
 
 </ion-content>

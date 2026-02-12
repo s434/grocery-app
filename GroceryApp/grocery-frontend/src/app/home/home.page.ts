@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-home',
@@ -16,17 +19,22 @@ export class HomePage implements OnInit {
   products: any[] = [];
   cart: { productId: number; quantity: number; name: string }[] = [];
 
-  // UI cart summary
   cartItems: any[] = [];
   totalPrice: number = 0;
 
   message = '';
   error = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
+  
 
   ngOnInit() {
     this.loadProducts();
+    this.router.events
+    .pipe(filter(event => event instanceof NavigationEnd))
+    .subscribe(() => {
+      this.loadProducts();
+    });
   }
 
   loadProducts() {
@@ -39,7 +47,6 @@ export class HomePage implements OnInit {
   updateCart(product: any, qty: string) {
     const quantity = Number(qty);
 
-    // Remove existing entry
     this.cart = this.cart.filter(i => i.productId !== product.id);
     if (quantity > product.stock) {
   this.error = `Only ${product.stock} left for ${product.name}`;
@@ -127,4 +134,22 @@ export class HomePage implements OnInit {
       this.loadProducts();
     }
   }
+  switchToAdmin() {
+  const username = prompt('Enter admin username:');
+  const password = prompt('Enter admin password:');
+  if (!username || !password) return;
+
+  this.http.post<any>(`${this.baseUrl}/auth/login`, { username, password })
+    .subscribe({
+      next: (res) => {
+       
+        localStorage.setItem('adminToken', res.token); 
+        alert('Login successful');
+        this.router.navigate(['/home/admin-dashboard']);
+      },
+      error: () => alert('Invalid credentials')
+    });
+}
+
+
 }

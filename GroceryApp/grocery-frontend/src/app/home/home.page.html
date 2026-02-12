@@ -1,8 +1,29 @@
+<nav style="
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  z-index: 999;
+ 
+">>
+  <button (click)="switchToAdmin()"
+              style="
+                width: 200px;
+                padding: 10px;
+                border-radius: 6px;
+                border: none;
+                background-color: #4CAF50;
+                color: white;
+                font-size: 15px;
+                cursor: pointer;
+              ">
+        Admin
+      </button>
+    </nav>
 <div style="background: white; color: black; padding: 20px; min-height: 100vh;">
 
   <div style="display: flex; gap: 30px;">
 
-    <!-- LEFT SIDE: Products -->
+   
     <div>
 
       <h2>Products</h2>
@@ -55,12 +76,13 @@
 
     </div>
 
-    <!-- RIGHT SIDE: Order Summary -->
+
     <div style="
       width: 300px;
       border: 1px solid #ccc;
       border-radius: 8px;
       padding: 12px;
+      margin-top: 2rem;
       background: #fafafa;
       height: fit-content;
     ">
