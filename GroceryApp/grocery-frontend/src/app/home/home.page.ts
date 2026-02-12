@@ -123,7 +123,7 @@ export class HomePage implements OnInit {
     if (completed === this.cart.length) {
 
       if (failedItems.length === 0) {
-        this.message = 'Order placed successfully ✅';
+        this.message = 'Order placed successfully';
       } else {
         this.error = `Out of stock: ${failedItems.join(', ')}`;
       }

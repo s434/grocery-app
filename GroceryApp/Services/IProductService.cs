@@ -1,5 +1,6 @@
 using GroceryApp.Models;
 using System.Collections.Generic;
+using GroceryApp.DTOs;
 
 namespace GroceryApp.Services
 {

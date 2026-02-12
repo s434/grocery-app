@@ -1,6 +1,7 @@
 using GroceryApp.Models;
 using GroceryApp.Services;
 using Microsoft.AspNetCore.Mvc;
+using GroceryApp.DTOs;
 
 namespace GroceryApp.Controllers
 {

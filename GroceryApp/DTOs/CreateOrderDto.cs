@@ -1,4 +1,4 @@
-namespace GroceryApp.Models
+namespace GroceryApp.DTOs
 {
     public class CreateOrderDto
     {
